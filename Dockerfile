@@ -7,7 +7,7 @@ LABEL org.opencontainers.image.source=$VCS_REF \
       org.opencontainers.image.authors=$GIT_USER 
 RUN apk --no-cache add tzdata
 RUN apk add bash 
-RUN apk curl
+RUN apk add curl
 ENV TZ=America/Buenos_Aires
 ENV PORT 5000
 WORKDIR /app
