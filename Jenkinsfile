@@ -11,12 +11,12 @@ pipeline {
             parallel {
                 stage("Install dependencies") {
                     steps {
-                       echo "prueba"
+                        echo "prueba Install dependencies"
                     }         
                 }
                 stage('Unit Test') {
                     steps {
-                       echo "prueba"
+                        echo "prueba Unit Test"
                     }
                 }
             }
@@ -26,38 +26,38 @@ pipeline {
             parallel {
                 stage('Horusec') {
                     steps {
-                       echo "prueba"
+                        echo "prueba Horusec"
                     }
                 }
                 stage('Npm Audit') {
                     steps {
-                       echo "prueba"
+                        echo "prueba Npm Audit"
                     }          
                 }
                 stage('Semgrep') {
                     steps {
-                       echo "prueba"
+                        echo "prueba Semgrep"
                     }
                 }                                                                                       
             }
-        } //end parallels
+        } // end parallels
 
         stage('Build') {
-                    steps {
-                       echo "prueba"
-                }
+            steps {
+                echo "prueba Build"
+            }
         }
 
         stage('Container Security Scan') {
             parallel {
                 stage('Trivy Scan') {
                     steps {
-                       echo "prueba"
+                        echo "prueba Trivy Scan"
                     }
                 }
                 stage('Linter Scan') {
                     steps {
-                       echo "prueba"
+                        echo "prueba Linter Scan"
                     }
                 }   
             }
@@ -67,12 +67,12 @@ pipeline {
             parallel {        
                 stage('Docker Push') {
                     steps {
-                       echo "prueba"
+                        echo "prueba Docker Push"
                     }
                 }
                 stage('Update Compose') {
                     steps {
-                       echo "prueba"
+                        echo "prueba Update Compose"
                     }
                 }
             }
@@ -80,24 +80,20 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                echo "prueba"
-                // sshagent(['ssh-aws']) {
-                //    
-                // }
+                echo "prueba Deploy"
             }
         } 
 
         stage('Security DAST') {
             steps {
-              echo "prueba"
-                 }
+                echo "prueba Security DAST"
+            }
         }
+        
         stage('Notifications') {
             steps {
-             echo "prueba"
-                }
+                echo "prueba Notifications"
+            }
         }
-
-    }//end stages
-
+    }// end stages
 }// end pipeline
