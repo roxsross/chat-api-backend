@@ -26,7 +26,8 @@ pipeline {
             parallel {
                 stage('Horusec') {
                     steps {
-                        echo "prueba Horusec"
+                        sh './automation/auto_security.sh horusec'
+                        stash includes: 'report_horusec.json', name: 'report_horusec.json'
                     }
                 }
                 stage('Npm Audit') {
