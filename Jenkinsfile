@@ -112,19 +112,21 @@ pipeline {
 
         stage('Deploy') {
             steps {
+                sshagent(['ssh-aws']) {
                 sh './automation/auto_deploy.sh'
+            }
             }
         } 
 
         stage('Security DAST') {
             steps {
-                echo "prueba Security DAST"
+                 sh './automation/auto_security.sh dast'
             }
         }
         
         stage('Notifications') {
             steps {
-                echo "prueba Notifications"
+                 sh './automation/auto_notify.sh'
             }
         }
     }// end stages
