@@ -34,8 +34,9 @@ pipeline {
                     steps {
                         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                             script {
-                                docker.image('node:18-alpine').inside() {
+                                docker.image('node:18-alpine').inside("${DOCKER_ARGS}") {
                                     try {
+                                        sh 'npm install'
                                         sh 'npm audit --registry=https://registry.npmjs.org -audit-level=moderate --json > report_npmaudit.json || true'
                                     } catch (err) {
                                         throw err
@@ -57,7 +58,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo "prueba Build"
+                sh './automation/auto_docker.sh build'
             }
         }
 
@@ -65,12 +66,14 @@ pipeline {
             parallel {
                 stage('Trivy Scan') {
                     steps {
-                        echo "prueba Trivy Scan"
+                       sh './automation/auto_security.sh trivy'
+                       sh 'python automation/roxs-security-tools.py report_trivy.json trivy'
+                       stash includes: 'report_trivy.json', name: 'report_trivy.json'
                     }
                 }
                 stage('Linter Scan') {
                     steps {
-                        echo "prueba Linter Scan"
+                        sh './automation/auto_security.sh hadolint'
                     }
                 }   
             }
