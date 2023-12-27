@@ -32,12 +32,24 @@ pipeline {
                 }
                 stage('Npm Audit') {
                     steps {
-                        echo "prueba Npm Audit"
-                    }          
+                        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                            script {
+                                docker.image('node:18-alpine').inside() {
+                                    try {
+                                        sh 'npm audit --registry=https://registry.npmjs.org -audit-level=moderate --json > report_npmaudit.json || true'
+                                    } catch (err) {
+                                        throw err
+                                    }
+                                }
+                            }
+                        }
+                        stash includes: 'report_npmaudit.json', name: 'report_npmaudit.json'
+                    }           
                 }
                 stage('Semgrep') {
                     steps {
-                        echo "prueba Semgrep"
+                         sh './automation/auto_security.sh semgrep'
+                        stash includes: 'report_semgrep.json', name: 'report_semgrep.json'
                     }
                 }                                                                                       
             }
