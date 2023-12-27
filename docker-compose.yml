@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  backend:
+    image: REGISTRY/REPLACE:TAG
+    container_name: backend
+    restart: always
+    ports:
+      - 5001:5000
+    environment:
+      - VIRTUAL_HOST=URL
+      - VIRTUAL_PORT=5000
+      - LETSENCRYPT_HOST=URL
+      - LETSENCRYPT_EMAIL=295devops@gmail.com  
+    depends_on:
+      - db
+    networks:
+      - security 
+             
+  db:
+    image: mongo:5.0
+    restart: always
+    container_name: db
+    ports:
+      - 27017:27017
+    networks:
+      - security    
+
+  nginx-proxy:
+    container_name: nginx-proxy
+    image: jwilder/nginx-proxy
+    ports:
+      - 80:80
+      - 443:443
+    restart: always
+    volumes:
+      - html:/usr/share/nginx/html
+      - certs:/etc/nginx/certs
+      - vhostd:/etc/nginx/vhost.d
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - confd:/etc/nginx/conf.d
+    networks:
+      - security
+
+networks:
+  security:
+    driver: bridge  
+
+volumes:
+  html:
+  certs:
+  vhostd:
+  confd:

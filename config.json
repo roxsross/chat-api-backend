@@ -1,0 +1,28 @@
+{
+    "environments":{
+        "master":{
+            "TARGET_AWS_ACCOUNT":"459137896070",
+            "EC2INSTANCE" : "ec2-user@184.72.74.102",
+            "ENV": "184.72.74.102",
+            "DOMAIN":"back.295devops.com"
+        },
+        "origin/master":{
+            "TARGET_AWS_ACCOUNT":"459137896070",
+            "EC2INSTANCE" : "ec2-user@184.72.74.102",
+            "ENV": "184.72.74.102",
+            "DOMAIN":"back.295devops.com"
+        },        
+        "develop":{
+            "TARGET_AWS_ACCOUNT":"459137896070",
+            "EC2INSTANCE" : "ec2-user@54.227.202.34",
+            "ENV": "54.227.202.34",
+            "DOMAIN":"back-dev.295devops.com"
+        },
+        "origin/develop":{
+            "TARGET_AWS_ACCOUNT":"459137896070",
+            "EC2INSTANCE" : "ec2-user@54.227.202.34",
+            "ENV": "54.227.202.34",
+            "DOMAIN":"back-dev.295devops.com"
+        }        
+    }
+}
