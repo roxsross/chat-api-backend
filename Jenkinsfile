@@ -11,12 +11,28 @@ pipeline {
             parallel {
                 stage("Install dependencies") {
                     steps {
-                        echo "prueba Install dependencies"
+                        script {
+                                docker.image('node:18-alpine').inside("${DOCKER_ARGS}") {
+                                    try {
+                                        sh 'npm install'
+                                    } catch (err) {
+                                        throw err
+                                    }
+                                }
+                            }
                     }         
                 }
                 stage('Unit Test') {
                     steps {
-                        echo "prueba Unit Test"
+                        script {
+                                docker.image('node:18-alpine').inside("${DOCKER_ARGS}") {
+                                    try {
+                                        sh 'npm run test'
+                                    } catch (err) {
+                                        throw err
+                                    }
+                                }
+                            }
                     }
                 }
             }
@@ -83,12 +99,12 @@ pipeline {
             parallel {        
                 stage('Docker Push') {
                     steps {
-                        echo "prueba Docker Push"
+                        sh './automation/auto_docker.sh push'
                     }
                 }
                 stage('Update Compose') {
                     steps {
-                        echo "prueba Update Compose"
+                        sh './automation/auto_patching.sh'
                     }
                 }
             }
@@ -96,7 +112,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                echo "prueba Deploy"
+                sh './automation/auto_deploy.sh'
             }
         } 
 
