@@ -83,7 +83,7 @@ pipeline {
                 stage('Trivy Scan') {
                     steps {
                        sh './automation/auto_security.sh trivy'
-                       sh 'python automation/roxs-security-tools.py report_trivy.json trivy'
+                       sh 'python automation/trivy_vulnerability.py'
                        stash includes: 'report_trivy.json', name: 'report_trivy.json'
                     }
                 }
